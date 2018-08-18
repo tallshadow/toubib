@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Toubib</title>
+	<f:facet name="middle">
+		<h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+		<h:outputStylesheet name="bootstrap/css/bootstrap-responsive.css" />
+		<h:outputStylesheet name="css/style.css" />
+	</f:facet>
+</h:head>
+<h:body>
+
+	<h:form id="leftMenuFormId">
+
+		<p:menu toggleable="true" styleClass="menu">
+			<p:submenu label="#{msg['agenda.name']}" styleClass="submenu"
+				icon="fa-li fa fa-calendar">
+				<p:menuitem id="agenda" value="#{msg['agenda.name']}"
+					icon="fa fa-angle-right" action="schedule" update="@(.schedule)"
+					partialSubmit="true" />
+			</p:submenu>
+			<p:submenu label="#{msg['client.title']}" styleClass="submenu"
+				icon="fa fa-users">
+				<p:menuitem id="clients" value="#{msg['client.list']}"
+					icon="fa fa-angle-right" action="clients" update="@(.listClients)"
+					partialSubmit="true" />
+
+				<p:menuitem id="client" value="#{msg['client.new']}"
+					icon="fa fa-plus" action="newClient" update=":content"
+					partialSubmit="true" />
+			</p:submenu>
+			<p:submenu label="#{msg['contactUs.title']}" styleClass="submenu"
+				icon="fa-li fa fa-envelope">
+				<p:menuitem id="contact" value="#{msg['contactUs']}"
+					icon="fa fa-angle-right" action="contactUs"  update="@(.schedule)"
+					partialSubmit="true" ><f:param name="pageId" value="contactUs" />
+					</p:menuitem>
+			</p:submenu>
+
+		</p:menu>
+
+	</h:form>
+	<style>
+</style>
+</h:body>
+</html>
+

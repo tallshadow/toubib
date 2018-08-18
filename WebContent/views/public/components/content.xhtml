@@ -1,0 +1,131 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition>
+
+	<div style="width: 96%; margin: auto;">
+		<h:form>
+			<div class="ui-g" style="color:#222">
+				<div class="ui-g-1"></div>
+				<div class="ui-g-1">
+					<h:commandLink action="#{navigationController.showPage}" style="color:#222"
+						label="Contact" value="">
+						<f:param name="pageId" value="home" />
+				Toubib
+			</h:commandLink>
+				</div>
+				<div class="ui-g-1">
+					<h:commandLink action="#{navigationController.showPage}" style="color:#222"
+						outcome="contactUs" label="Contact" value="">
+						<f:param name="pageId" value="contactUs" />
+				Contact
+			</h:commandLink>
+				</div>
+				<div class="ui-g-1">
+					<a target="_blank" href="https://www.facebook.com/touubib/?fref=ts" style="color:#222">Facebook</a>
+				</div>
+
+			</div>
+		</h:form>
+
+		<!-- Carousel -->
+		<div id="homeCarousel" class="carousel slide">
+			<div id="carousel-example-generic" class="carousel slide"
+				data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#carousel-example-generic" data-slide-to="0"
+						class="active"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="1"
+						class=""></li>
+					<li data-target="#carousel-example-generic" data-slide-to="2"
+						class=""></li>
+				</ol>
+				<div class="carousel-inner" align="right">
+					<div class="item active" id="slide1">
+						<h:graphicImage library="images" name="medIt.jpg" />
+						<div class="carousel-caption">
+							<h4 id="white">#{msg['carousel.title1']}</h4>
+						</div>
+						<!-- end carousel-caption -->
+
+
+					</div>
+					<div class="item" id="slide2" style="right: 0%;">
+						<div class="carousel-caption" style="right: 2%; top: 0;">
+							<div class="header-text hidden-xs">
+								<h1
+									style="max-width: 350px; float: right; text-align: left; color: black !important; font-size: 32px; line-height: 49px; font-weight: 300; font-family: opensans, arial, sans-serif;">
+									#{msg['carousel.title2']}</h1>
+							</div>
+							<!-- /header-text -->
+
+						</div>
+						<h:graphicImage library="images" name="med2.jpg" />
+
+
+					</div>
+					<div class="item" id="slide3">
+						<div class="carousel-caption">
+							<h4 style="color: black">#{msg['carousel.title3']}</h4>
+
+						</div>
+						<!-- end carousel-caption -->
+						<h:graphicImage library="images" name="med3.jpg" />
+					</div>
+
+				</div>
+				<!-- end carousel-inner -->
+			</div>
+			<!-- /carousel-generic -->
+
+			<!-- Controls -->
+			<!-- 			<a class="left carousel-control" href="#myCarousel" data-slide="prev"> -->
+			<!-- 				<span class="icon-prev"></span> -->
+			<!-- 			</a> -->
+
+		</div>
+
+	</div>
+
+
+
+
+
+</ui:composition>
+
+<script type="text/javascript">
+	$(function() {
+		$('#homeCarousel').carousel({
+			interval : 2000,
+			pause : "false"
+		});
+		$('#playButton').click(function() {
+			$('#homeCarousel').carousel('cycle');
+		});
+		$('#pauseButton').click(function() {
+			$('#homeCarousel').carousel('pause');
+		});
+	});
+</script>
+<style>
+#carousel-example-generic .carousel-caption {
+	color: black;
+	right: 0%;
+	float: right;
+	text-align: left;
+	max-width: 200px;
+	left: auto;
+	/*top: auto;*/
+	top: 50%;
+	transform: translateY(-50%);
+	bottom: initial;
+}
+
+.inline {
+	display: inline;
+}
+</style>
+</html>

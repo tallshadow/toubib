@@ -1,0 +1,343 @@
+<ui:composition template="/template/userLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+
+		<h:form>
+			<f:metadata>
+				<f:viewAction action="#{clientBean.initLists}" />
+			</f:metadata>
+		</h:form>
+		<h:form id="formApp" styleClass="schedule" style="margin-left:8%">
+
+			<p:growl id="messages" showDetail="true" />
+			<br />
+			<h:panelGrid columnClasses="value">
+				<p:schedule id="schedule" value="#{scheduleView.eventModel}"
+					styleClass="schedule" widgetVar="myschedule" timeZone="GMT"
+					locale="fr">
+
+					<p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}"
+						update="eventDetails headerSelect pin categoryBar"
+						oncomplete="PF('eventDialog').show();" />
+					<p:ajax event="eventSelect"
+						listener="#{scheduleView.onEventSelect}"
+						update="eventDetails headerSelect pin categoryBar"
+						oncomplete="PF('eventDialog').show();" />
+					<p:ajax event="eventMove" listener="#{scheduleView.onEventMove}"
+						update="messages" />
+					<p:ajax event="eventResize"
+						listener="#{scheduleView.onEventResize}" update="messages" />
+
+				</p:schedule>
+			</h:panelGrid>
+			<div class="ui-fluid">
+				<p:dialog widgetVar="eventDialog"
+					header="#{msg['schedule.appointment']}" showEffect="clip"
+					hideEffect="clip" styleClass="customDialog">
+
+					<f:facet name="header" styleClass="headerDialog">
+						<p:outputLabel value="#{msg['schedule.appointment']}"
+							style="top:5%"></p:outputLabel>
+
+						<p:selectOneMenu id="headerSelect"
+							value="#{scheduleView.appointment.category}" styleClass="place">
+							<f:selectItem itemLabel="#{msg['schedule.categorise']}"
+								itemValue="categorise" />
+							<f:selectItem itemLabel="#{msg['schedule.consultation']}"
+								itemValue="consultation" />
+							<f:selectItem itemLabel="#{msg['schedule.check']}"
+								itemValue="check" />
+							<f:selectItem itemLabel="#{msg['schedule.analysis']}"
+								itemValue="analysis" />
+							<f:selectItem itemLabel="#{msg['schedule.radios']}"
+								itemValue="radios" />
+
+							<f:ajax render="categoryBar" />
+						</p:selectOneMenu>
+
+						<p:commandButton process="@this" id="pin"
+							actionListener="#{scheduleView.buttonAction}"
+							styleClass="#{scheduleView.buttonStyle} pin" style="font:right"
+							icon="fa fa-thumb-tack" title="#{msg['schedule.importance']}"
+							update="pin" />
+
+					</f:facet>
+
+					<p:panel id="categoryBar" style="margin-buttom:5%; border: hidden;"
+						styleClass="#{scheduleView.appointment.category}"></p:panel>
+
+					<h:panelGrid id="eventDetails" columns="2">
+
+						<p:outputLabel for="title" value="#{msg['schedule.title']}" />
+						<p:inputText id="title" value="#{scheduleView.event.title}"
+							required="true" />
+
+						<p:outputLabel for="reason" value="#{msg['schedule.reason']}" />
+						<p:inputTextarea id="reason"
+							value="#{scheduleView.event.description}" />
+
+
+						<p:outputLabel for="from" value="#{msg['schedule.startDate']}" />
+						<p:calendar id="from" value="#{scheduleView.event.startDate}"
+							 pattern="dd/MM/yyyy HH:mm" />
+
+						<p:outputLabel for="to" value="#{msg['schedule.endDate']}" />
+						<p:calendar id="to" value="#{scheduleView.event.endDate}"
+							 pattern="dd/MM/yyyy HH:mm" />
+
+
+						<p:outputLabel for="allDay" value="All Day:" />
+						<h:selectBooleanCheckbox id="allDay"
+							value="#{scheduleView.event.allDay}" />
+
+						<p:outputLabel value="#{msg['client.title']}" />
+
+						<h:form>
+
+
+							<p:selectOneMenu id="clients"
+								value="#{scheduleView.selectedClientId}" style="width:100%"
+								filter="true">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+
+								<f:selectItems value="#{clientBean.clients}" var="client"
+									itemLabel="#{client.lastName} #{client.firstName}"
+									itemValue="#{client.id}" />
+								<p:ajax execute="@form" event="change"
+									listener="#{scheduleView.selectedOneInit}" />
+								<f:ajax execute="@form"
+									listener="#{scheduleView.selectedOneInit}" event="blur"></f:ajax>
+							</p:selectOneMenu>
+
+
+
+
+						</h:form>
+						<h:outputLabel value="#{msg['schedule.place']}" />
+						<p:selectOneMenu value="#{scheduleView.appointment.place}">
+							<f:selectItem itemLabel="#{msg['schedule.office']}"
+								itemValue="office" />
+							<f:selectItem itemLabel="#{msg['schedule.hospital']}"
+								itemValue="hospital" />
+							<f:selectItem itemLabel="#{msg['schedule.home']}"
+								itemValue="home" />
+							<f:selectItem itemLabel="#{msg['schedule.other']}"
+								itemValue="other" />
+						</p:selectOneMenu>
+
+
+						<p:commandButton value="#{msg['button.remove']}" id="remove"
+							actionListener="#{scheduleView.deleteApp}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+							update="eventDetails headerSelect pin categoryBar"
+							style="background:#ff6d6f;color:#fff;border:none;text-shadow: none;float:right;width:150px;" />
+
+						<p:commandButton id="addButton" value="#{msg['button.record']}"
+							actionListener="#{scheduleView.addEvent}"
+							update=":formApp:headerSelect"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+							style="background:#65bf1f;color:#fff;border:none;text-shadow: none;float:right;width:150px;" />
+
+
+					</h:panelGrid>
+				</p:dialog>
+			</div>
+		</h:form>
+
+		<script type="text/javascript">
+			PrimeFaces.locales['ar'] = {
+				closeText : 'إغلق',
+				prevText : 'إلى الخلف',
+				nextText : 'إلى الأمام',
+				currentText : 'بداية',
+				monthNames : [ 'ديسمبر', 'نوفمبر', 'أكتوبر', 'سبتمبر', 'أغسطس',
+						'يوليو', 'يونيو', 'مايو', 'ابريل', 'مارس', 'فبراير',
+						'يناير' ],
+				monthNamesShort : [ 'ديسمبر', 'نوفمبر', 'أكتوبر', 'سبتمبر',
+						'أغسطس', 'يوليو', 'يونيو', 'مايو', 'ابريل', 'مارس',
+						'فبراير', 'يناير' ],
+				dayNames : [ 'يوم الأحد‎', 'يوم الإثنين‎', 'يوم الثلاثاء‎',
+						'‏يوم الأَرْبعاء‎', '‏يوم الخَمِيس‎',
+						'يوم الجُمْعَة‎‎', 'يوم السَّبْت' ],
+				dayNamesShort : [ 'الأحد‎', 'الإثنين‎', 'الثلاثاء‎',
+						'الأَرْبعاء‎', 'الخَمِيس‎', 'الجُمْعَة‎‎', 'السَّبْت' ],
+				dayNamesMin : [ 'الأحد‎', 'الإثنين‎', 'الثلاثاء‎',
+						'الأَرْبعاء‎', 'الخَمِيس‎', 'الجُمْعَة‎‎', 'السَّبْت' ],
+				weekHeader : 'الأسبوع',
+				firstDay : 1,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : '',
+				timeOnlyTitle : 'الوقت فقط',
+				timeText : 'الوقت',
+				hourText : 'ساعة',
+				minuteText : 'دقيقة',
+				secondText : 'ثانية',
+				ampm : false,
+				month : 'الشهر',
+				week : 'الأسبوع',
+				day : 'اليوم',
+				allDayText : 'سا ئراليوم'
+			};
+
+			PrimeFaces.locales['fr'] = {
+				closeText : 'Fermer',
+				prevText : 'Précédent',
+				nextText : 'Suivant',
+				monthNames : [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai',
+						'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre',
+						'Novembre', 'Décembre' ],
+				monthNamesShort : [ 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun',
+						'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+				dayNames : [ 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi',
+						'Vendredi', 'Samedi' ],
+				dayNamesShort : [ 'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven',
+						'Sam' ],
+				dayNamesMin : [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
+				weekHeader : 'Semaine',
+				firstDay : 1,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : '',
+				timeOnlyTitle : 'Choisir l\'heure',
+				timeText : 'Heure',
+				hourText : 'Heures',
+				minuteText : 'Minutes',
+				secondText : 'Secondes',
+				currentText : 'Maintenant',
+				ampm : false,
+				month : 'Mois',
+				week : 'Semaine',
+				day : 'Jour',
+				allDayText : 'Toute la journée'
+			};
+
+			$('#selector button').click(
+					function() {
+						$(this).addClass('active').siblings().removeClass(
+								'active');
+						$(this).addClass('buttonPined').siblings().removeClass(
+								'buttonPined');
+
+						// TODO: insert whatever you want to do with $(this) here
+					});
+		</script>
+		<style type="text/css">
+.value {
+	width: 1000px;
+}
+
+.ui-selectonemenu-label {
+	width: 100% !important;
+}
+
+.ui-selectonemenu {
+	width: 100% !important;
+}
+
+.ui-dialog.customDialog .buttonPined {
+	background: red;
+	border-color: red;
+	border: none;
+	color: #fff;
+}
+
+.ui-dialog.customDialog .ui-button.pin {
+	width: 20px;
+}
+
+.ui-dialog-title.place .ui-button-icon-only.place, .ui-dialog-title.pin .ui-button-icon-only.pin
+	{
+	/* 	background-color: green; */
+	float: right;
+	width: 100%;
+}
+
+.ui-button-icon-only.pin {
+	float: right;
+	color: red;
+	border: none;
+	background: transparent;
+}
+
+.ui-dialog.customDialog .ui-dialog-title {
+	width: 86%;
+}
+
+.ui-dialog.customDialog .consultation {
+	background-color: #3C6478;
+	border-color: #3C6478;
+	margin-bottom: 5%;
+}
+
+.ui-dialog.customDialog .check {
+	background-color: #7B68EE;
+	border-color: #7B68EE;
+	margin-bottom: 5%;
+}
+
+.ui-dialog.customDialog .analysis {
+	background-color: #A3B86C;
+	border-color: #A3B86C;
+	margin-bottom: 5%;
+}
+
+.ui-dialog.customDialog .radios {
+	background-color: #EBC944;
+	border-color: #EBC944;
+	margin-bottom: 5%;
+}
+
+.ui-selectonemenu.place {
+	width: 40% !important;
+	left: 10%;
+	margin-right: 1%;
+}
+
+.check, .public-event .fc-event-skin, .public-event a {
+	background-color: #7B68EE;
+	border-color: #7B68EE;
+	margin-bottom: 5%;
+}
+
+.analysis, .public-event .fc-event-skin, .public-event a {
+	background-color: #A3B86C;
+	border-color: #A3B86C;
+	margin-bottom: 5%;
+}
+
+.radios, .public-event .fc-event-skin, .public-event a {
+	background-color: #EBC944;
+	border-color: #EBC944;
+	margin-bottom: 5%;
+}
+
+.consultation, .public-event .fc-event-skin, .public-event a {
+	background-color: #3C6478;
+	border-color: #3C6478;
+	margin-bottom: 5%;
+}
+
+.addPin {
+	background-size: 15px 15px;
+	background-image: url("#{resource['images/pin-icon.png']}");
+	background-position: right;
+	background-repeat: no-repeat;
+}
+
+.fc-content .fc-time {
+	display: none;
+}
+
+.schedule .fc-today /* today */ {
+	background: #186ba0 none repeat scroll 0 0;
+}
+</style>
+	</ui:define>
+</ui:composition>

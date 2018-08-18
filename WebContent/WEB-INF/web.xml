@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	<display-name>toubib-web</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+	        		/WEB-INF/spring-config.xml
+	    </param-value>
+	</context-param>
+
+<!-- 	<context-param> -->
+<!-- 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name> -->
+<!-- 		<param-value>server</param-value> -->
+<!-- 	</context-param> -->
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+<!-- 	<context-param> -->
+<!-- 		<param-name>org.omnifaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING</param-name> -->
+<!-- 		<param-value>javax.faces.application.ViewExpiredException</param-value> -->
+<!-- 	</context-param> -->
+<!-- 	<context-param> -->
+<!-- 		<param-name>org.omnifaces.EXCEPTION_TYPES_TO_UNWRAP</param-name> -->
+<!-- 		<param-value>javax.ejb.EJBException,javax.persistence.RollbackException</param-value> -->
+<!-- 	</context-param> -->
+
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+<!-- 		<param-value>Development</param-value> -->
+		<param-value>Production</param-value>
+	</context-param>
+	<!-- <context-param> -->
+	<!-- <param-name>log4jConfigLocation</param-name> -->
+	<!-- <param-value>/resources/log4j.properties</param-value> -->
+	<!-- </context-param> -->
+	<!-- <listener> -->
+	<!-- <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class> -->
+	<!-- </listener> -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<welcome-file-list>
+		<welcome-file>views/public/components/home.xhtml</welcome-file>
+	</welcome-file-list>
+
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/faces/views/public/errorpages/expired.xhtml</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.sql.SQLException</exception-type>
+		<location>/faces/public/errorpages/database.xhtml</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.RuntimeException</exception-type>
+		<location>/faces/views/public/errorpages/bug.xhtml</location>
+	</error-page>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+
+	<mime-mapping>
+		<extension>eot</extension>
+		<mime-type>application/vnd.ms-fontobject</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>otf</extension>
+		<mime-type>font/opentype</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ttf</extension>
+		<mime-type>application/x-font-ttf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff</extension>
+		<mime-type>application/x-font-woff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>svg</extension>
+		<mime-type>image/svg+xml</mime-type>
+	</mime-mapping>
+</web-app>

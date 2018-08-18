@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="#{loginBean.loggedin ? '/template/userLayout.xhtml' : '/template/layout.xhtml'}">
+
+	<ui:define name="content">
+
+		<h:form>
+
+			<div class="container">
+
+				<div class="container_box">
+					<p:growl id="growl" showDetail="true" sticky="true" />
+					<ui:fragment rendered="#{userController.errorRendered}">
+						<ui:include src="/views/public/errorpages/expiredToken.xhtml" />
+					</ui:fragment>
+					<div
+						style="max-width: 500px; padding: 15px; margin: 40px auto; padding: 9px 14px; background-image: none; font-size: 15px;">
+						<h2
+							style="font-size: 25px; font-weight: bold; text-align: center;">#{msg['email.contactUs']}</h2>
+
+						<div>
+							<p:panelGrid columns="1" style="width:100%; text-align: center;"
+								styleClass="ui-panelgrid-blank">
+
+								<p:inputText type="email" styleClass="email"
+									placeholder="E-mail" value="#{userController.userEmail}"
+									requiredMessage="Please enter your email address."
+									validatorMessage="Invalid email format" label="email"
+									style="width:100%">
+									<f:validateRegex
+										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+								</p:inputText>
+								<p:inputTextarea placeholder="#{msg['email.urMsg']}"
+									value="#{userController.contactMsg}" rows="8" cols="10"
+									style="width:100%; " />
+
+								<p:commandButton value="#{msg['button.send']}"
+									styleClass="buttonSend" update="growl"
+									style=" background: #1990db none repeat scroll 0 0;box-shadow: none !important; color: #ffffff;text-shadow: none"
+									action="#{userController.contactUs}"></p:commandButton>
+							</p:panelGrid>
+						</div>
+						<div style="text-align: center"></div>
+
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+
+		<style>
+body {
+	font-family: 'Open Sans', sans-serif;
+	background: #f2f2f2;
+	background-image: none;
+}
+
+.ui-growl {
+	margin-top: 5%;
+}
+</style>
+
+	</ui:define>
+</ui:composition>

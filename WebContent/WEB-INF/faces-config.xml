@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+
+	<application>
+		<locale-config>
+			<default-locale>fr</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>com.adouae.toubib.messages</base-name>
+			<var>msg</var>
+		</resource-bundle>
+	</application>
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	</application>
+
+	<factory>
+		<exception-handler-factory>com.adouae.toubib.error.ViewExpiredExceptionExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+
+	<!-- <lifecycle> <phase-listener>com.fijib.security.CacheControlFilter</phase-listener> 
+		</lifecycle> -->
+
+	<application>
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+	</application>
+
+	<!-- home -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/views/components/home.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{navigationController.showPage}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/views/public/loginRegister/login.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationController.showPage}</from-action>
+			<from-outcome>register</from-outcome>
+			<to-view-id>/views/public/loginRegister/register.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationController.showPage}</from-action>
+			<from-outcome>homeClient</from-outcome>
+			<to-view-id>/views/secure/client/homeClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationController.showPage}</from-action>
+			<from-outcome>clients</from-outcome>
+			<to-view-id>/views/secure/client/clients.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/views/public/loginRegister/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{loginBean.login}</from-action>
+			<from-outcome>homeClient</from-outcome>
+			<to-view-id>/views/secure/client/homeClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.login}</from-action>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/views/secure/client/homeClient.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactUs</from-outcome>
+			<to-view-id>/views/public/components/contactUs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/views/public/loginRegister/register.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{registerBean.addUser}</from-action>
+			<from-outcome>homeClient</from-outcome>
+			<to-view-id>/views/secure/client/homeClient.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Schedule -->
+	<navigation-rule>
+		<from-view-id>/views/secure/schedule/schedule.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>clients</from-outcome>
+			<to-view-id>/views/secure/client/clients.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>newClient</from-outcome>
+			<to-view-id>/views/secure/client/newClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>homeClient</from-outcome>
+			<to-view-id>/views/secure/client/homeClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactUs</from-outcome>
+			<to-view-id>/views/public/components/contactUs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Clients -->
+	<navigation-rule>
+		<from-view-id>/views/secure/client/clients.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactUs</from-outcome>
+			<to-view-id>/views/public/components/contactUs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/views/secure/client/newClient.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactUs</from-outcome>
+			<to-view-id>/views/public/components/contactUs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Clients details -->
+	<navigation-rule>
+		<from-view-id>/views/secure/client/clientDetails.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contactUs</from-outcome>
+			<to-view-id>/views/public/components/contactUs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Contact Toubib Team -->
+	<navigation-rule>
+		<from-view-id>/views/public/components/contactUs.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>clients</from-outcome>
+			<to-view-id>/views/secure/client/clients.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>newClient</from-outcome>
+			<to-view-id>/views/secure/client/newClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/components/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>homeClient</from-outcome>
+			<to-view-id>/views/secure/client/homeClient.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule</from-outcome>
+			<to-view-id>/views/secure/schedule/schedule.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+</faces-config>

@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="#{loginBean.loggedin ? '/template/userLayout.xhtml' : '/template/layout.xhtml'}">
+
+	<ui:define name="content">
+		<div class="container">         
+   			<h3 class=" alert-error"
+			style="max-width: 400px; padding: 15px; margin: 40px auto; padding: 9px 14px; background-image: none; ">#{msg['exception.bug']}</h3>
+			<h:form>
+			<h:commandLink id="logo" action="#{navigationController.showPage}" 
+				outcome="home" label="Home" value="" styleClass="logo">
+				<f:param name="pageId" value="home" />
+				<h4 style="text-align: center;">Home</h4>
+			</h:commandLink>
+		</h:form>
+		 </div>
+
+<style>
+body {
+	font-family: 'Open Sans', sans-serif;
+	background: #f2f2f2;
+	background-image: none;
+}
+
+.alert-error {
+background: none;
+background-color: #dd2e1f;
+overflow: hidden;
+display: block;
+color: #fff;
+font-size: 18px;
+line-height: 20px;
+position: relative;
+padding: 10px 20px 10px 50px;
+font-weight: bold;
+text-align: center;
+}
+</style>
+	</ui:define>
+
+
+</ui:composition>

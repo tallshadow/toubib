@@ -1,0 +1,189 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/layout.xhtml">
+
+	<ui:define name="content">
+		<div class="form-signin">
+			<div class="signin_box2">
+				<div class="signin_title">
+					<h2>Connexion</h2>
+				</div>
+			</div>
+			<div class="signin_box">
+				<h:form style="position: relative; z-index: 9999;">
+					<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+					<div class="signin_inputs">
+						<div class="signin_inputs_txt">
+							<p:inputText id="userName" name='j_username' type="email"
+								styleClass="email" placeholder="E-mail"
+								value="#{loginBean.userDto.email}"
+								requiredMessage="Please enter your email address."
+								validatorMessage="Invalid email format" label="email"
+								style="border-top: 1px solid #e3e3e3;">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</p:inputText>
+							<p:password id="password" name="j_password"
+								value="#{loginBean.userDto.password}" placeholder="Mot de passe"
+								required="true" label="password"
+								style="border-top: 1px solid #e3e3e3;" />
+						</div>
+					</div>
+					<p:commandButton type="login" value="Se connecter" update="growl"
+						id="nonAjax" action="#{loginBean.login}"
+						oncomplete="handleLoginRequest(xhr, status, args)"
+						styleClass="connexionButton" ajax="false"
+						style="height: 38px; padding:0px;" />
+
+					<p:separator />
+					<div style="text-align: center; font-size: 15px;font-weight: bold;">
+						<h:link outcome="forgotPassword" style="color:black;">#{msg['forgotPassword']}</h:link>
+
+					</div>
+
+					<p:separator />
+				</h:form>
+
+
+				<h:form>
+					<div class="signup_inputs">
+
+						<p:commandButton type="register" action="register"
+							styleClass="mobile_signup_btn" value="Inscription"
+							style="height: 38px; padding:0px;">
+							<f:param name="pageId" value="register" />
+						</p:commandButton>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+		<style>
+/* Login view*/
+body {
+	font-family: 'Avenir LT Std 45 Book';
+	color: rgb(41, 41, 41);
+	margin: 0px;
+	padding: 0px;
+	background-color: #f2f2f2;
+	line-height: 1.6;
+	font-weight: 400;
+}
+
+.form-signin {
+	margin: 0 auto;
+	max-width: 50%;
+}
+
+.signin_box2 {
+	margin: auto;
+	width: 260px;
+	padding-top: 10%;
+}
+
+.signin_title {
+	background-position: 0 50%;
+	background-size: cover;
+	text-align: center;
+	width: 77%;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 40px;
+	font-weight: bold;
+	color: black;
+	line-height: 50px;
+}
+
+.signin_box {
+	margin: auto;
+	width: 260px;
+}
+
+.signin_inputs_txt {
+	padding: 10px 0px;
+}
+
+.signup_inputs {
+	position: relative;
+	z-index: 9999;
+	margin-top: 8em;
+}
+
+.ui-button[type=login] {
+	padding: 2%;
+	box-shadow: none !important;
+	background: #1990DB;
+}
+
+.ui-button[type=register] {
+	padding: 1%;
+	box-shadow: none !important;
+}
+
+.signin_inputs .ui-button[type=login] input[type=text], .signin_inputs input[type=email],
+	.signin_inputs input[type=password], .signin_inputs select,
+	.signin_inputs input[type=submit], .connexionButton, #birthday-m,
+	#birthday-d, #birthday-y, .mobile_signup_btn, .ui-button[type=register]
+	{
+	padding: 10px;
+	font-size: 16px;
+	width: 100%;
+	color: #444;
+	border: 0px;
+	margin: 0px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	Border-radius: 0%;
+	text-shadow: none;
+}
+
+input, input[type="password" i], input[type="search" i] {
+	-webkit-appearance: textfield;
+	padding: 1px;
+	background-color: white;
+	border: 2px inset;
+	border-image-source: initial;
+	border-image-slice: initial;
+	border-image-width: initial;
+	border-image-outset: initial;
+	border-image-repeat: initial;
+	-webkit-rtl-ordering: logical;
+	-webkit-user-select: text;
+	cursor: auto;
+}
+
+.signin_inputs .ui-button[type=login] input[type="submit"],
+	.mobile_signup_btn, .connexionButton {
+	background-color: #1990DB;
+	color: #ffffff;
+}
+
+.signin_inputs .ui-button[type=login] input[type=submit],
+	.connexionButton {
+	cursor: pointer;
+}
+
+.signup_inputs input[type="submit"], .mobile_signup_btn {
+	background-color: rgba(255, 255, 255, 0.6);
+	color: black;
+}
+
+.mobile_signup_btn {
+	padding: -0.7em 4em;
+}
+/* growl*/
+.ui-growl {
+	top: 30%;
+}
+</style>
+
+	</ui:define>
+</ui:composition>
+
+
